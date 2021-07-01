@@ -1,0 +1,255 @@
+@media only screen and (min-width: 600px) {
+  html {
+    zoom: .8;
+  }
+}
+
+@media only screen and (min-width: 800px) {
+  html {
+    zoom: .9;
+  }
+}
+
+@media only screen and (min-width: 1000px) {
+  html {
+    zoom: 1;
+  }
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    background-image: linear-gradient(grey, white);
+    margin-top: 64px;
+}
+
+#container {
+    position: relative;
+    /*background-color: white;*/
+    margin: auto;
+    min-width: 1000px;
+    max-width: 1200px;
+    height: 1400px;
+    /*box-shadow: 0 0 15px rgb(0 0 0 / 65%);*/
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    /*border: 1px solid black;
+*/}
+
+.header {
+    width: 100%;
+    font-size: 64px;
+    align-items: center;
+    text-align: center;
+    display: block;
+}
+
+.header h1 {
+    align-items: center;
+    width: fit-content;
+    padding: 12px;
+    margin: 38px auto;
+}
+#gamecontainer {
+    position: relative;
+}
+
+#gameheader {
+    display: flex;
+    margin: 0px 10px 24px;
+    background-color: lightgrey;
+    padding: 6px 0;
+    box-shadow: 0 0 15px rgb(0 0 0 / 65%);
+}
+
+#round {
+    font-size: 24px;
+    padding-left: 10px;
+}
+
+#timercontainer {
+    position: absolute;
+    right: 10px;
+    font-size: 24px;
+    time-align: right;
+    padding-right: 10px;
+    display: flex;
+}
+
+#gamebody {
+    display: flex;
+}
+
+#gamebody > div {
+    box-shadow: 0 0 15px rgb(0 0 0 / 65%);
+}
+
+#playerlist {
+    display: flex;
+    flex-direction: column;
+    margin-left: 2%;
+    margin-right: 1%;
+    width: 37%;
+}
+
+.player {
+    background-color: teal;
+    width: 100%;
+    display: flex;
+    border: 1px solid rgba(238, 238, 238, 0.5);
+}
+
+.playerinfo {
+    /*margin: 2px 8px;*/
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    /*border: 1px solid black;*/
+}
+
+.playerinfo.name {
+    width: 54%;
+}
+
+.playername {
+    align-items: center;
+    height: 50%;
+    line-height: 2;
+}
+
+.score {
+    height: 50%;
+    line-height: 1.5;
+    bottom: 0;
+}
+
+.completionstatus {
+    width: 31%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.statusinitials {
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    font-size: 16px;
+    padding: 3px;
+}
+
+.kickcontainer {
+    width: 15%;
+}
+
+.player button {
+    margin: 1px;
+    padding: 0px;
+    width: 80%;
+    height: 60%;
+    line-height: 60%;
+    font-size: 12px;
+    align-items: center;
+    background-color: indianred;
+}
+
+#acronymcreator {
+    background-color: white;
+    position: absolute;
+    right: 0;
+    margin-left: 1%;
+    margin-right: 2%;
+    width: 57%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+}
+
+#acronymdisplay {
+    width: 100%;
+    min-height: 120px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid black;
+}
+
+.initials {
+    width: 77px;
+    height: 77px;
+    line-height: 77px;
+    /*margin: 10px;*/
+    text-align: center;
+    font-size: 30px;
+}
+
+.completed {
+    background-color: rgb(0, 255, 0);
+}
+
+.uncompleted {
+    background-color: rgb(255, 0, 0);
+}
+
+#acronyminput {
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    letter-spacing: 2px;
+    font-size: 160%;
+}
+/*
+#acronyminput textarea {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    margin: 0;
+    font-size: 160%;
+    border: 0;
+    background: rgb(238, 238, 238);
+    padding: 0;
+    resize: none;
+    overflow: auto;
+    border: 1px solid black;
+}*/
+
+#acronyminput div {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    margin: 0;
+    font-size: 160%;
+    border: 0;
+    background: rgb(238, 238, 238);
+    padding: 0;
+    resize: none;
+    overflow: auto;
+    border: 1px solid black;
+}
+
+#acronymsubmit {
+    width: 100%;
+    display: block;
+    text-align: center;
+    margin: 0;
+    letter-spacing: 2px;
+    font-size: 160%;
+    border: 0;
+    background: rgb(0, 255, 0);
+    padding: 0;
+    border: 1px solid black;
+}
+
+#acronymsubmit:active, #acronymsubmit:disabled {
+    background: rgb(200, 200, 200);
+}
+
+#footer {
+    height: 100px;
+}
+
+#roundhistory {
+
+}
