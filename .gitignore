@@ -1,0 +1,10 @@
+*.json
+*.txt
+*.csv
+*.png
+*.jpg
+*.log
+*.bat
+*.profile
+images/
+**/__pycache__/
