@@ -14,7 +14,7 @@
 
             <div id="gamecontainer">
                 <div id="gameheader">
-                    <div id="round">Round 2 of 5</div>
+                    <div id="round">Round 2 of 8</div>
                     <div id="timercontainer">
                         <img src="images/hourglass.webp" width="28" height="28">
                         <div id="timer">60</div>
@@ -25,7 +25,7 @@
                         <div class="player" id="player0">
                             <div class="playerinfo name">
                                 <div class="playername">Cring Ching Ta-ting</div>
-                                <div class="score">Score: 22</div>
+                                <div class="score">Score: 4</div>
                             </div>
                             <div class="playerinfo completionstatus">
                                 <div class="statusinitials completed">G</div>
@@ -40,7 +40,7 @@
                         <div class="player" id="player1">
                             <div class="playerinfo name">
                                 <div class="playername">SafeSmoke650</div>
-                                <div class="score">Score: 18</div>
+                                <div class="score">Score: 3</div>
                             </div>
                             <div class="playerinfo completionstatus">
                                 <div class="statusinitials completed">G</div>
@@ -55,7 +55,7 @@
                         <div class="player" id="player2">
                             <div class="playerinfo name">
                                 <div class="playername">Coronary Heart Disaster</div>
-                                <div class="score">Score: 12</div>
+                                <div class="score">Score: 1</div>
                             </div>
                             <div class="playerinfo completionstatus">
                                 <div class="statusinitials completed">G</div>
@@ -94,21 +94,87 @@
                             <!-- <input type="text" id="acronyminputtextbox" placeholder="What does this acronym stand for?"> -->
                             <!-- <textarea id="acronyminputtextbox" rows="2">IF I <span style="color: green;">GOTTA</span> GO <span style="color: green;">HARD</span> ON A BITCH IMMA MAKE IT LOOK SEXY</textarea> -->
                             <div id="inputcontainer" >
-                                <p>IF I <span style="color: green;">GOTTA</span> GO <span style="color: green;">HARD</span> ON A BITCH IMMA MAKE IT LOOK SEXY</p>
+                                <p></p>
+                                <!-- <p>IF I <span style="color: green;">GOTTA</span> GO <span style="color: green;">HARD</span> ON A BITCH IMMA MAKE IT LOOK SEXY</p> -->
                             </div>
                             <button id="acronymsubmit" disabled>Submit</button>
                         </div>
                     </div>
                 </div>
                 <div id="gamefooter">
-                    <div id="roundhistory">
-
-                    </div>
+                    <table id="roundhistory">
+                        <thead>
+                            <tr>
+                                <th class="roundnumber">Round</th>
+                                <th class="playername">Name</th>
+                                <th class="acronym">Acronym</th>
+                                <th class="votes">
+                                    <div>Votes</div>
+                                    <div class="playericons">
+                                        <div class="icon" id="icon0"></div>
+                                        <div class="icon" id="icon1"></div>
+                                        <div class="icon" id="icon2"></div>
+                                        <div class="icon" id="icon3"></div>
+                                    </div>
+                                </th>
+                                <th class="points">Points</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="roundnumber">1</td>
+                                <td class="playernames">
+                                    <div class="playername">Cring Ching Ta-ting</div>
+                                    <div class="playername">SafeSmoke650</div>
+                                    <div class="playername">Coronary Heart Disaster</div>
+                                    <div class="playername">IFLYTHEBUS</div>
+                                </td>
+                                <td class="acronyms">
+                                    <div class="acronym">My love for you is bulletproof but you're the one who shot me</div>
+                                    <div class="acronym">You must stick up for yourself son</div>
+                                    <div class="acronym">I wrote Jesus Walks, I'm never gonna hell</div>
+                                    <div class="acronym">I can't believe that it's always like this</div>
+                                </td>
+                                <td class="votes">
+                                    <div class="voterow">
+                                        <div class="vote like"></div>
+                                        <div class="vote like"></div>
+                                        <div class="vote like"></div>
+                                        <div class="vote like"></div>
+                                    </div>
+                                    <div class="voterow">
+                                        <div class="vote like"></div>
+                                        <div class="vote"></div>
+                                        <div class="vote like"></div>
+                                        <div class="vote like"></div>
+                                    </div>
+                                    <div class="voterow">
+                                        <div class="vote"></div>
+                                        <div class="vote"></div>
+                                        <div class="vote like"></div>
+                                        <div class="vote"></div>
+                                    </div>
+                                    <div class="voterow">
+                                        <div class="vote"></div>
+                                        <div class="vote"></div>
+                                        <div class="vote"></div>
+                                        <div class="vote"></div>
+                                    </div>
+                                </td>
+                                <td class="points">
+                                    <div class="pointvalue">4</div>
+                                    <div class="pointvalue">3</div>
+                                    <div class="pointvalue">1</div>
+                                    <div class="pointvalue">0</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
                 <!-- <div id="acronymjudging" class="gamelayer"></div> -->
             </div>
         </div>
-        <div id="footer"></div>
+        <!-- <div id="footer"></div> -->
     </body>
 </html>
