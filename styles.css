@@ -89,6 +89,18 @@ body {
     box-shadow: 0 0 15px rgb(0 0 0 / 65%);
 }
 
+.gamelayer {
+    background-color: white;
+    position: absolute;
+    right: 0;
+    margin-left: 1%;
+    margin-right: 2%;
+    width: 57%;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+}
+
 #playerlist {
     display: flex;
     flex-direction: column;
@@ -119,7 +131,7 @@ body {
     width: 54%;
 }
 
-.playername {
+.playerinfo > .playername {
     align-items: center;
     height: 50%;
     line-height: 2;
@@ -162,17 +174,13 @@ body {
     background-color: indianred;
 }
 
-#acronymcreator {
-    background-color: white;
-    position: absolute;
-    right: 0;
-    margin-left: 1%;
-    margin-right: 2%;
-    width: 57%;
-    display: flex;
-    flex-direction: column;
-    height: fit-content;
-    border: 1px solid black;
+#acronymwriter {
+    display: none;
+}
+
+#acronymjudger {
+    /*display: none;*/
+    height: 200px;
 }
 
 #acronymdisplay {
@@ -182,6 +190,12 @@ body {
     justify-content: space-around;
     align-items: center;
     border: 1px solid black;
+}
+
+#acronymjudger > #acronymdisplay {
+    display: flex;
+    flex-direction: column;
+    height: 200px;
 }
 
 .initials {
@@ -257,10 +271,6 @@ body {
 #gamefooter {
     position: relative;
     top: 75px;
-    height: 100px;
-}
-
-#roundhistory {
     width: 98%;
     margin: 1%;
     background-color: dimgrey;
@@ -268,40 +278,99 @@ body {
     text-align: center;
 }
 
-table tbody, table thead {
+#gamefooter > * {
+    width: 98%;
+    margin: 1%;
+
+}
+
+#roundhistoryheader {
+    display: flex;
+    line-height: 2;
+    width: calc(98% - 10px);
+}
+
+#roundhistory {
     display: block;
+    background-color: dimgrey;
+    box-shadow: 0 0 3px rgb(0 0 0 / 65%);
+    line-height: 45px;
+    height: 155px;
+    border-collapse: collapse;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
-table tbody {
-   overflow: auto;
-   height: 400px;
-}
-
-table {
+tbody {
+    display: table;
     width: 100%;
 }
 
-th
-{
-    /*width: 75px;*/
-}
-
-table th:nth-child(1), td:nth-child(1) { width: 8%;  /*max-width: 50px; */}
-table th:nth-child(2), td:nth-child(2) { width: 20%; /*max-width: 100px;*/ }
-table th:nth-child(3), td:nth-child(3) { width: 50%; /*max-width: 150px;*/ }
-table th:nth-child(4), td:nth-child(4) { width: 15%; /*max-width: 200px;*/ }
-table th:nth-child(5), td:nth-child(5) { width: 7%; /*max-width: 200px;*/ }
-
-#roundhistory td {
+#roundhistory td > div {
     border: 1px solid black;
-}
-
-#roundhistory > table {
-
+    height: 45px;
 }
 
 .roundnumber {
+    vertical-align: middle;
+    width: 6%;
+}
 
+.playernames {
+    width: 20%;
+}
+
+.acronyms {
+    width: 59%;
+}
+
+.acronym {
+}
+
+.votes {
+    width: 10%;
+    line-height: 1;
+}
+
+.playericons, .voterow {
+    display: flex;
+    /*padding: 8px 5px 0px;*/
+    justify-content: space-around;
+}
+
+#icon0 {
+    background-color: rgb(5, 55, 155);
+}
+
+#icon1 {
+    background-color: rgb(166, 55, 33);
+}
+
+#icon2 {
+    background-color: rgb(23, 244, 34);
+}
+
+#icon3 {
+    background-color: rgb(203, 13, 155);
+}
+
+.icon, .vote {
+    width: 16px;
+    height: 16px;
+    border: 1px solid black;
+}
+
+.vote {
+    margin: 13px 0px;
+    background-color: red;
+}
+
+.like {
+    background-color: green;
+}
+
+.points {
+    width: 5%;
 }
 
 /* width */
