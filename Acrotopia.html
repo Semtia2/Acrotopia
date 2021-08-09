@@ -14,6 +14,70 @@
                 <h1>Acrotopia</h1>
             </div>
 
+            <div id="welcomecontainer">
+                <form id="createlobby">
+                    <div id="screenname">
+                        <input type="text" placeholder="Enter name" maxlength="32">
+                    </div>
+                    <div id="creategame">
+                        <button>Create Game</button>
+                    </div>
+                    <div id="rules">
+                        <div id="roundnumber">
+                            <div class="description">
+                                <h5>Number of Rounds</h5>
+                                <p>Choose the number of rounds that will be played</p>
+                            </div>
+                            <input type="number" min="1" max="50">
+                        </div>
+                        <div id="roundtime">
+                            <div class="description">
+                                <h5>Time</h5>
+                                <p>Choose the the amount of seconds each round will last</p>
+                            </div>
+                            <input type="number">
+                        </div>
+                        <div id="acronymlength">
+                            <div class="description">
+                                <h5>Acronym Length</h5>
+                                <p>Choose the number of letters each acronym will have</p>
+                            </div>
+                            <input type="number" min="3" max="8">
+                        </div>
+                        <div id="strictacronym">
+                            <div class="description">
+                                <h5>Strict Acronyms?</h5>
+                                <p>If turned off then extra words will be allowed between the acronym words</p>
+                            </div>
+                            <input type="radio" id="strictoff">
+                            <label for="strictoff">OFF</label>
+                            <input type="radio" id="stricton">
+                            <label for="stricton">ON</label>
+                        </div>
+                        <div id="voting">
+                            <div class="description">
+                                <h5>Voting Method</h5>
+                                <p>Choose whether players only vote exactly once per round or if players can vote for all the acronyms they like</p>
+                            </div>
+                            <input type="radio" id="single">
+                            <label for="single">SINGLE VOTE</label>
+                            <input type="radio" id="plural">
+                            <label for="plural">MULTIPLE VOTES</label>
+                        </div>
+                        <div id="afkresponse">
+                            <div class="description">
+                                <h5>Kick AFK players?</h5>
+                                <p>If turned on then when a player doesn't enter a response in time the remaining players will vote whether to kick them from the game</p>
+                            </div>
+                            <input type="radio" id="kickoff">
+                            <label for="kickoff">OFF</label>
+                            <input type="radio" id="kickon">
+                            <label for="kickon">ON</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
             <div id="gamecontainer">
                 <div id="gameheader">
                     <div id="round">Round 2 of 8</div>

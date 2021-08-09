@@ -52,10 +52,62 @@ body {
     margin: 38px auto;
 }
 
+#welcomecontainer {
+    position: absolute;
+    border: 4px rgba(29,29,27,.15) solid;
+    box-shadow: 0px 1px 0px 0px rgb(255 255 255 / 15%);
+    left: 50%;
+    margin-left: -512px;
+    width: 1024px;
+    align-items: center;
+}
+
+#createlobby {
+    display: flex;
+    flex-direction: column;
+}
+
+#createlobby > div {
+    position: relative;
+    margin-top: 32px;
+    left: 25%;
+    width: 50%;
+}
+
+#screenname > input {
+    height: 46px;
+    width: 100%;
+    /*margin-left: -213px;*/
+    display: block;
+    background-color: rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    border-radius: 7px;
+    font-size: 28px;
+    padding: 0px 10px;
+}
+
+#creategame > button {
+    position: relative;
+    height: 48px;
+    left: 12.5%;
+    width: 75%;
+    font-size: 24px;
+}
+
+#createlobby {
+
+}
+
+#rules > div {
+    display: flex;
+    flex-direction: row;
+}
+
 #gamecontainer {
     position: relative;
     display: flex;
     flex-direction: column;
+    display: none;
 }
 
 #gameheader {

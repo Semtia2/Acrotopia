@@ -18,7 +18,7 @@ var game = {
         // idk
     },
 
-    // Modes: enterLobby, createLobby, writeAcronyms, judgeAcromyms, results
+    // Modes: createLobby, waitingRoom, writeAcronyms, judgeAcromyms, results
     mode: "writeAcronyms",
 
     switchToWrite: function() {
