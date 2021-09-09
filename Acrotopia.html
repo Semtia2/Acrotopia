@@ -26,14 +26,16 @@
                         <div id="roundnumber">
                             <div class="description">
                                 <h5>Number of Rounds</h5>
-                                <p>Choose the number of rounds that will be played</p>
+                                <p>Choose the number of rounds</p>
                             </div>
-                            <input type="number" min="1" max="50">
+                            <section>
+                                <input type="number" min="1" max="50">
+                            </section>
                         </div>
                         <div id="roundtime">
                             <div class="description">
                                 <h5>Time</h5>
-                                <p>Choose the the amount of seconds each round will last</p>
+                                <p>Choose the the amount of seconds per round</p>
                             </div>
                             <input type="number">
                         </div>
@@ -44,35 +46,41 @@
                             </div>
                             <input type="number" min="3" max="8">
                         </div>
-                        <div id="strictacronym">
+                        <div id="lenientacronym">
                             <div class="description">
-                                <h5>Strict Acronyms?</h5>
-                                <p>If turned off then extra words will be allowed between the acronym words</p>
+                                <h5>Lenient Acronyms?</h5>
+                                <p>Allow extra words between the acronym words</p>
                             </div>
-                            <input type="radio" id="strictoff">
-                            <label for="strictoff">OFF</label>
-                            <input type="radio" id="stricton">
-                            <label for="stricton">ON</label>
+                            <div class="switch">
+                                <input type="radio" name="lenient" id="lenientoff" checked>
+                                <label for="lenientoff">OFF</label>
+                                <input type="radio" name="lenient" id="lenienton">
+                                <label for="lenienton">ON</label>
+                            </div>
                         </div>
                         <div id="voting">
                             <div class="description">
-                                <h5>Voting Method</h5>
-                                <p>Choose whether players only vote exactly once per round or if players can vote for all the acronyms they like</p>
+                                <h5>Single Vote?</h5>
+                                <p>Restrict players to only vote for one acronym per round</p>
                             </div>
-                            <input type="radio" id="single">
-                            <label for="single">SINGLE VOTE</label>
-                            <input type="radio" id="plural">
-                            <label for="plural">MULTIPLE VOTES</label>
+                            <div class="switch">
+                                <input type="radio" name="voting" id="plural" checked>
+                                <label for="plural">OFF</label>
+                                <input type="radio" name="voting" id="single">
+                                <label for="single">ON</label>
+                            </div>
                         </div>
                         <div id="afkresponse">
                             <div class="description">
                                 <h5>Kick AFK players?</h5>
-                                <p>If turned on then when a player doesn't enter a response in time the remaining players will vote whether to kick them from the game</p>
+                                <p>Require a kick vote before skipping AFK players</p>
                             </div>
-                            <input type="radio" id="kickoff">
-                            <label for="kickoff">OFF</label>
-                            <input type="radio" id="kickon">
-                            <label for="kickon">ON</label>
+                            <div class="switch">
+                                <input type="radio" name="afk" id="kickoff" checked>
+                                <label for="kickoff">OFF</label>
+                                <input type="radio" name="afk" id="kickon">
+                                <label for="kickon">ON</label>
+                            </div>
                         </div>
                     </div>
                 </form>

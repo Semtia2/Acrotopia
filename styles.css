@@ -25,6 +25,7 @@ body {
     margin-top: 64px;
 }
 
+/**/
 #container {
     position: relative;
     /*background-color: white;*/
@@ -52,6 +53,7 @@ body {
     margin: 38px auto;
 }
 
+/*Starting a game*/
 #welcomecontainer {
     position: absolute;
     border: 4px rgba(29,29,27,.15) solid;
@@ -103,6 +105,50 @@ body {
     flex-direction: row;
 }
 
+.description {
+    width: 60%;
+    border: 1px solid black;
+}
+
+#rules section {
+    width: 40%;
+}
+
+.switch {
+    width: 111px;
+    display: flex;
+    align-self: stretch;
+    position: relative;
+    border: 2px solid rgba(0, 0, 0, 0.6);
+}
+
+.switch > input {
+    position: absolute;
+    overflow:  hidden;
+    display: none;
+}
+
+.switch > label {
+    cursor: pointer;
+    flex: 1 1 0%;
+    margin: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: Black;
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.7);
+    border-radius: 5px;
+    transition: all 0.2s ease-in-out 0s;
+}
+
+input:checked + label {
+    background-color: rgb(204, 191, 228);
+    color: rgb(73, 40, 179);
+}
+
+/*Game styles*/
 #gamecontainer {
     position: relative;
     display: flex;
@@ -425,6 +471,7 @@ tbody {
     width: 5%;
 }
 
+/*Scrollbar*/
 /* width */
 ::-webkit-scrollbar {
   width: 10px;
