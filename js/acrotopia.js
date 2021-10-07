@@ -15,7 +15,20 @@ var client = {
 
 var game = {
     init: function() {
-        // idk
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        [...coll].map(function(val, index, array){
+            val.addEventListener("click", function(){
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if(content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            })
+        })
     },
 
     // Modes: createLobby, waitingRoom, writeAcronyms, judgeAcromyms, results

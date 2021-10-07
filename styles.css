@@ -100,6 +100,31 @@ body {
 
 }
 
+.collapsible {
+    left: 50%;
+    margin-top: 32px;
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 50%;
+    border: none;
+    text-align: center;
+    outline: none;
+    font-size: 15px;
+}
+
+.active, .collapsible:hover {
+    background-color: #ccc;
+}
+
+#welcomecontainer #rules {
+    margin-top: 1px;
+    display: none;
+    overflow: hidden;
+    background-color: #f1f1f1;
+}
+
 #rules > div {
     display: flex;
     flex-direction: row;
@@ -124,7 +149,7 @@ body {
 
 .switch > input {
     position: absolute;
-    overflow:  hidden;
+    overflow: hidden;
     display: none;
 }
 
