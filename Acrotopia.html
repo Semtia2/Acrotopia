@@ -5,9 +5,11 @@
         <title>Acrotopia</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="js/acrotopia.js" type = "text/javascript" charset = "utf-8"></script>
+        <script src="js/jquery-autoresize.js" type = "text/javascript" charset = "utf-8"></script>
 
         <link rel="stylesheet" href="styles.css" type="text/css" media="screen" charset="utf-8">
     </head>
+
     <body>
         <div id="container">
             <div class="header">
@@ -20,9 +22,9 @@
                         <input type="text" placeholder="Enter name" maxlength="32">
                     </div>
                     <div id="creategame">
-                        <button>Create Game</button>
+                        <input type="button" onclick="game.startGame();" value="Create Game">
                     </div>
-                    <button type="button" class="collapsible">Customize</button>
+                    <input type="button" class="collapsible" value="Customize">
                     <div id="rules">
                         <div id="roundnumber">
                             <div class="description">
@@ -96,83 +98,13 @@
                     </div>
                 </div>
                 <div id="gamebody">
-                    <div id="playerlist">
-                        <div class="player" id="player0">
-                            <div class="playerinfo name">
-                                <div class="playername">Cring Ching Ta-ting</div>
-                                <div class="score">Score: 4</div>
-                            </div>
-                            <div class="playerinfo completionstatus">
-                                <div class="statusinitials completed">G</div>
-                                <div class="statusinitials completed">H</div>
-                                <div class="statusinitials completed">G</div>
-                                <div class="statusinitials completed">T</div>
-                            </div>
-                            <div class="playerinfo kickcontainer">
-                                <button class="playerinfo" hidden="true">KICK?</button>
-                            </div>
-                        </div>
-                        <div class="player" id="player1">
-                            <div class="playerinfo name">
-                                <div class="playername">SafeSmoke650</div>
-                                <div class="score">Score: 3</div>
-                            </div>
-                            <div class="playerinfo completionstatus">
-                                <div class="statusinitials completed">G</div>
-                                <div class="statusinitials completed">H</div>
-                                <div class="statusinitials uncompleted">G</div>
-                                <div class="statusinitials uncompleted">T</div>
-                            </div>
-                            <div class="playerinfo kickcontainer">
-                                <button class="playerinfo" hidden="true">KICK?</button>
-                            </div>
-                        </div>
-                        <div class="player" id="player2">
-                            <div class="playerinfo name">
-                                <div class="playername">Coronary Heart Disaster</div>
-                                <div class="score">Score: 1</div>
-                            </div>
-                            <div class="playerinfo completionstatus">
-                                <div class="statusinitials completed">G</div>
-                                <div class="statusinitials uncompleted">H</div>
-                                <div class="statusinitials uncompleted">G</div>
-                                <div class="statusinitials uncompleted">T</div>
-                            </div>
-                            <div class="playerinfo kickcontainer">
-                                <button class="playerinfo" hidden="true">KICK?</button>
-                            </div>
-                        </div>
-                        <div class="player" id="player3">
-                            <div class="playerinfo name">
-                                <div class="playername">IFLYTHEBUS</div>
-                                <div class="score">Score: 0</div>
-                            </div>
-                            <div class="playerinfo completionstatus">
-                                <div class="statusinitials uncompleted">G</div>
-                                <div class="statusinitials uncompleted">H</div>
-                                <div class="statusinitials uncompleted">G</div>
-                                <div class="statusinitials uncompleted">T</div>
-                            </div>
-                            <div class="playerinfo kickcontainer">
-                                <button class="playerinfo">KICK?</button>
-                            </div>
-                        </div>
-                    </div>
+                    <div id="playerlist"></div>
                     <div id="acronymwriter" class="gamelayer">
                         <div id="acronymdisplay">
-                            <div class="initials completed">G</div>
-                            <div class="initials completed">H</div>
-                            <div class="initials uncompleted">G</div>
-                            <div class="initials uncompleted">T</div>
                         </div>
                         <div id="acronyminput">
-                            <!-- <input type="text" id="acronyminputtextbox" placeholder="What does this acronym stand for?"> -->
-                            <!-- <textarea id="acronyminputtextbox" rows="2">IF I <span style="color: green;">GOTTA</span> GO <span style="color: green;">HARD</span> ON A BITCH IMMA MAKE IT LOOK SEXY</textarea> -->
-                            <div id="inputcontainer" >
-                                <p></p>
-                                <!-- <p>IF I <span style="color: green;">GOTTA</span> GO <span style="color: green;">HARD</span> ON A BITCH IMMA MAKE IT LOOK SEXY</p> -->
-                            </div>
-                            <button id="acronymsubmit" disabled>Submit</button>
+                            <textarea spellcheck="false"></textarea>
+                            <input type="button" id="acronymsubmit" disabled value="Submit">
                         </div>
                     </div>
                     <div id="acronymjudger" class="gamelayer">
@@ -252,6 +184,5 @@
                 </div>
             </div>
         </div>
-        <!-- <div id="footer"></div> -->
     </body>
 </html>
