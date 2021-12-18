@@ -18,6 +18,7 @@
 
 html {
     min-height: 100%;
+    user-select: none;
 }
 
 body {
@@ -259,6 +260,7 @@ input:checked + label {
     align-items: center;
     height: 50%;
     line-height: 2;
+    user-select: auto;
 }
 
 .score {
@@ -302,10 +304,10 @@ input:checked + label {
 }
 
 #acronymjudger {
-    height: 200px;
+    /*height: 333px;*/
 }
 
-#acronymdisplay {
+#letterdisplay {
     width: 100%;
     min-height: 120px;
     display: flex;
@@ -314,10 +316,36 @@ input:checked + label {
     border: 1px solid black;
 }
 
-#acronymjudger > #acronymdisplay {
+#acronymdisplay {
     display: flex;
+    width: 100%;
+    min-height: 120px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid black;
     flex-direction: column;
-    height: 200px;
+    height: 100%;
+}
+
+#acronymdisplay .acronym {
+    width: 85%;
+    text-align: center;
+    padding: 10px;
+    margin: 18px;
+    background-color: rgba(104, 101, 101, 0.46);
+    border: 1px solid black;
+}
+
+#acronymdisplay .acronym.selected {
+    background-color: rgba(32, 227, 106, 1.0);
+}
+
+#acronymdisplay .acronym:hover {
+    cursor: pointer;
+    padding: 10px;
+    margin: 13px;
+    border: 6px solid rgba(18, 91, 102, 0.45);
 }
 
 .initials {
@@ -362,11 +390,12 @@ input:checked + label {
 
 #acronymsubmit {
     width: 100%;
+    height: 47px;
     display: block;
     text-align: center;
     margin: 0;
     letter-spacing: 2px;
-    font-size: 160%;
+    font-size: 41px;
     border: 0;
     background: rgb(0, 255, 0);
     padding: 0;
@@ -374,6 +403,24 @@ input:checked + label {
 }
 
 #acronymsubmit:active, #acronymsubmit:disabled {
+    background: rgb(200, 200, 200);
+}
+
+#finalizevote {
+    width: 100%;
+    height: 47px;
+    display: block;
+    text-align: center;
+    margin: 0;
+    letter-spacing: 2px;
+    font-size: 41px;
+    border: 0;
+    background: rgb(0, 255, 0);
+    padding: 0;
+    border: 1px solid black;
+}
+
+#finalizevote:active, #finalizevote:disabled {
     background: rgb(200, 200, 200);
 }
 

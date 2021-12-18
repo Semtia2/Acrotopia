@@ -100,19 +100,18 @@
                 <div id="gamebody">
                     <div id="playerlist"></div>
                     <div id="acronymwriter" class="gamelayer">
-                        <div id="acronymdisplay">
+                        <div id="letterdisplay">
                         </div>
                         <div id="acronyminput">
-                            <textarea spellcheck="false"></textarea>
-                            <input type="button" id="acronymsubmit" disabled value="Submit">
+                            <textarea spellcheck="false" oninput="game.activateSubmit(this.value);"></textarea>
+                            <input type="button" id="acronymsubmit" disabled value="Submit" onclick="submit();">
                         </div>
                     </div>
                     <div id="acronymjudger" class="gamelayer">
                         <div id="acronymdisplay">
-                            <div class="acronym">My love for you is bulletproof but you're the one who shot me</div>
-                            <div class="acronym">You must stick up for yourself son</div>
-                            <div class="acronym">I wrote Jesus Walks, I'm never gonna hell</div>
-                            <div class="acronym">I can't believe that it's always like this</div>
+                        </div>
+                        <div id="acronymvote">
+                            <input type="button" id="finalizevote" disabled value="Submit">
                         </div>
                     </div>
                 </div>
