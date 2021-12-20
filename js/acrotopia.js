@@ -35,6 +35,7 @@ var client = {
 }
 
 var game = {
+    name: "Balcony nut",
     playerCount: 7,
     roundCount: 8,
     roundTimer: 600,
@@ -53,10 +54,10 @@ var game = {
         {name:"Zyberzky Ewe", score:0},
     ],
     acronymResponses: [
-        {player: "", acronym: "My love for you is bulletproof but you're the one who shot me"},
-        {player: "Balcony nut", acronym: "You must stick up for yourself son"},
-        {player: "", acronym: "I wrote Jesus Walks, I'm never gonna hell"},
-        {player: "", acronym: "I can't believe that it's always like this"}
+        {player: "", acronym: "My love for you is bulletproof but you're the one who shot me", score:4},
+        {player: "Balcony nut", acronym: "You must stick up for yourself son", score:2},
+        {player: "", acronym: "I wrote Jesus Walks, I'm never gonna hell", score:1},
+        {player: "", acronym: "I can't believe that it's always like this", score:0}
     ],
 
     init: function() {
@@ -186,14 +187,38 @@ var game = {
             id: "acronymdisplay"
         })
         game.acronymResponses.map(function(response) {
-            $acronymDisplayTemplate.append($("<div>", {
-                class: "acronym",
-                text: response.acronym
-            }).on("click", function(){
-                this.classList.toggle("selected")
-                $("#finalizevote").prop('disabled', $("#acronymdisplay .acronym.selected").length < 1);
-            })
-            )
+            // The tabs are meant to reflect the html structure.
+            if (response.player == game.name) {
+                $acronymDisplayTemplate.append($("<div>", {
+                    class: "acronymContainer"
+                })
+                    .append($("<div>", {
+                        class: "acronym acronymContainerDiv",
+                        text: response.acronym
+                    }))
+                    .append($("<div>", {
+                        class: "result acronymContainerDiv"
+                    }))
+                )
+            }
+            else {
+                $acronymDisplayTemplate.append($("<div>", {
+                    class: "acronymContainer"
+                })
+                    .append($("<div>", {
+                        class: "acronym selectable acronymContainerDiv",
+                        text: response.acronym
+                    })
+                        .on("click", function(){
+                            this.classList.toggle("selected")
+                            $("#finalizevote").prop('disabled', $("#acronymdisplay .acronym.selected").length < 1);
+                        })
+                    )
+                    .append($("<div>", {
+                        class: "result acronymContainerDiv"
+                    }))
+                )
+            }
         })
         $("#acronymdisplay").replaceWith($acronymDisplayTemplate)
         $("#acronymdisplay .acronym")
@@ -201,6 +226,18 @@ var game = {
         $('#acronymwriter').hide();
         $('#acronymjudger').show();
         game.mode = "judgeAcronyms";
+    },
+
+    switchToResults: function() {
+        var sortedResponses = game.acronymResponses.slice(0).sort((first, second) => second.score - first.score)
+        var topScore = sortedResponses[0].score
+        var $scores = $(".result")
+        $scores.text(index => game.acronymResponses[index].score)
+        $(".acronym").removeClass("selectable").off("click")
+        // .addClass(index => (game.acronymResponses[index].score==topScore)?"winner":"")
+        .addClass(function(index) {
+            return (game.acronymResponses[index].score==topScore)?"winner":""
+        })
     },
 
     getRandomLetter() {

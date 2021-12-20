@@ -11,21 +11,21 @@
     </head>
 
     <body>
-        <div id="container">
+        <div id="container" class="wholeContainer">
             <div class="header">
                 <h1>Acrotopia</h1>
             </div>
 
-            <div id="welcomecontainer">
-                <form id="createlobby">
-                    <div id="screenname">
+            <div id="welcomecontainer" class="welcomeContainer">
+                <form id="createlobby" class="createLobby">
+                    <div id="screenname" class="createLobbyDiv">
                         <input type="text" placeholder="Enter name" maxlength="32">
                     </div>
-                    <div id="creategame">
+                    <div id="creategame" class="createLobbyDiv">
                         <input type="button" onclick="game.startGame();" value="Create Game">
                     </div>
                     <input type="button" class="collapsible" value="Customize">
-                    <div id="rules">
+                    <div id="rules" class="createLobbyDiv">
                         <div id="roundnumber">
                             <div class="description">
                                 <h5>Number of Rounds</h5>
@@ -111,11 +111,11 @@
                         <div id="acronymdisplay">
                         </div>
                         <div id="acronymvote">
-                            <input type="button" id="finalizevote" disabled value="Submit">
+                            <input type="button" id="finalizevote" disabled value="Submit" onclick="game.switchToResults()">
                         </div>
                     </div>
                 </div>
-                <div id="gamefooter">
+                <!-- <div id="gamefooter">
                     <div id="roundhistoryheader">
                         <div class="roundnumber">Round</div>
                         <div class="playernames">Names</div>
@@ -180,7 +180,7 @@
                             </td>
                         </tr>
                     </table>
-                </div>
+                </div> -->
             </div>
         </div>
     </body>

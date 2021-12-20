@@ -16,6 +16,10 @@
   }
 }
 
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 html {
     min-height: 100%;
     user-select: none;
@@ -27,7 +31,7 @@ body {
 }
 
 /**/
-#container {
+.wholeContainer {
     position: relative;
     /*background-color: white;*/
     margin: auto;
@@ -36,8 +40,8 @@ body {
     height: 1400px;
     /*box-shadow: 0 0 15px rgb(0 0 0 / 65%);*/
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    /*border: 1px solid black;
-*/}
+    /*border: 1px solid black;*/
+}
 
 .header {
     width: 100%;
@@ -55,7 +59,7 @@ body {
 }
 
 /*Starting a game*/
-#welcomecontainer {
+.welcomeContainer {
     position: absolute;
     border: 4px rgba(29,29,27,.15) solid;
     box-shadow: 0px 1px 0px 0px rgb(255 255 255 / 15%);
@@ -65,12 +69,12 @@ body {
     align-items: center;
 }
 
-#createlobby {
+.createlobby {
     display: flex;
     flex-direction: column;
 }
 
-#createlobby > div {
+.createLobbyDiv {
     position: relative;
     margin-top: 32px;
     left: 25%;
@@ -305,6 +309,7 @@ input:checked + label {
 
 #acronymjudger {
     /*height: 333px;*/
+    flex-direction: column;
 }
 
 #letterdisplay {
@@ -317,7 +322,6 @@ input:checked + label {
 }
 
 #acronymdisplay {
-    display: flex;
     width: 100%;
     min-height: 120px;
     display: flex;
@@ -328,24 +332,52 @@ input:checked + label {
     height: 100%;
 }
 
-#acronymdisplay .acronym {
-    width: 85%;
-    text-align: center;
-    padding: 10px;
-    margin: 18px;
+.acronymContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    line-height: 1.5;
+}
+
+.acronymContainerDiv {
+    margin: 2%;
     background-color: rgba(104, 101, 101, 0.46);
     border: 1px solid black;
 }
 
-#acronymdisplay .acronym.selected {
+.acronymContainer .acronym {
+    width: 85%;
+    text-align: center;
+    padding: 15px;
+}
+
+.acronymContainer .result {
+    width: 15%;
+    text-align: center;
+    font-size: 32px;
+}
+
+#acronymdisplay .selected {
     background-color: rgba(32, 227, 106, 1.0);
 }
 
-#acronymdisplay .acronym:hover {
+#acronymdisplay .selectable:hover {
     cursor: pointer;
     padding: 10px;
-    margin: 13px;
     border: 6px solid rgba(18, 91, 102, 0.45);
+}
+
+.winner {
+    background-color: gold;
+}
+
+#scoredisplay {
+    width: 20%;
+    border: 1px solid black;
+}
+
+#acronymvote {
+    width: 100%;
 }
 
 .initials {
