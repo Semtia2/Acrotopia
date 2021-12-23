@@ -5,37 +5,51 @@ $(window).ready(function() {
     game.init();
 });
 
-// Will pretend to be server until I finish server side code
-// Afterwards I'll replace it with server code
-var dummyServer = {
-    acronymResponses: [
-        {player: "AOoOGH", acronym: "My love for you is bulletproof but you're the one who shot me"},
-        {player: "Balcony nut", acronym: "You must stick up for yourself son"},
-        {player: "Dude From Highschool", acronym: "I wrote Jesus Walks, I'm never gonna hell"},
-        {player: "BioDad", acronym: "I can't believe that it's always like this"}
-    ],
-
-    pushToServer: function(message) {
-        if (message.type !== 'utf8')
-            return
-
-        var clientMessage = JSON.parse(message.utf8Data);
-        switch (clientMessage.type) {
-            case "acronym":
-                dummyServer.acronymResponses.push({player:"Porto", acronym:clientMessage.acronym})
-                break;
-        }
-    }
-
-}
-
 var client = {
     websocket_url:"ws://localhost:8080/",
     websocket:undefined,
+
+    initializeWebSocket: function() {
+        var WebSocketObject = window.WebSocket || window.MozWebSocket;
+        if(!WebSocketObject){
+            game.showMessageBox("Your Browser does not support WebSockets. Acrotopia will not work.");
+            return;
+        }
+        this.websocket = new WebSocketObject(this.websocket_url);
+        this.websocket.onmessage = client.handleWebSocketMessage;
+        this.websocket.onopen = function(){
+            // Hide the starting menu layer
+            client.sendWebSocketMessage({type: 'Initialize', message:'A new player has joined'});
+        }
+
+        // Log errors
+        this.websocket.onerror = function(error) {
+          console.log('WebSocket Error ' + error);
+        };
+
+        // Log messages from the server
+        this.websocket.onmessage = function(e) {
+          console.log('Server: ' + e.data);
+        };
+    },
+
+    sendWebSocketMessage:function(messageObject){
+        this.websocket.send(JSON.stringify(messageObject));
+    },
+
+    handleWebSocketMessage: function(message){
+        var messageObject = JSON.parse(message.data);
+        switch(messageObject.type){
+            case "player_list":
+                game.playerList = messageObject.playerList;
+                game.updateWaitingRoom();
+                break;
+        }
+    },
 }
 
 var game = {
-    name: "Balcony nut",
+    name: undefined,
     playerCount: 7,
     roundCount: 8,
     roundTimer: 600,
@@ -44,15 +58,7 @@ var game = {
     singleVote: false,
     kick: false,
     acronymLetters: [],
-    playerList: [
-        {name:"AOoOGH!", score:0},
-        {name:"Balcony nut", score:0},
-        {name:"Dude From Highschool", score:0},
-        {name:"BioDad", score:0},
-        {name:"Porto", score:0},
-        {name:"Splante", score:0},
-        {name:"Zyberzky Ewe", score:0},
-    ],
+    playerList: [],
     acronymResponses: [
         {player: "", acronym: "My love for you is bulletproof but you're the one who shot me", score:4},
         {player: "Balcony nut", acronym: "You must stick up for yourself son", score:2},
@@ -61,6 +67,15 @@ var game = {
     ],
 
     init: function() {
+        var validateName = function() {
+            $("#creategame input").prop('disabled', $(this).val().trim() === "");
+        }
+        $("#screenname input")
+        .on("change", validateName)
+        .on("keypress", validateName)
+        .on("keydown", validateName)
+        .on("keyup", validateName)
+
         var coll = document.getElementsByClassName("collapsible");
         var i;
 
@@ -76,10 +91,15 @@ var game = {
             })
         })
 
-        $("#creategame input").click();
+        // $("#creategame input").click();
     },
 
     startGame: function() {
+        game.name = $("#screenname input").val().trim()
+
+        client.initializeWebSocket();
+        client.sendWebSocketMessage({type:"name", name:game.name})
+
         game.initializeAcronymWriter();
         game.initializeAcronymJudger();
         $('#welcomecontainer').hide();
@@ -88,6 +108,51 @@ var game = {
 
     // Modes: createLobby, waitingRoom, writeAcronyms, judgeAcromyms, results
     mode: "writeAcronyms",
+
+    updateWaitingRoom: function() {
+        if (mode != "waitingRoom")
+            return;
+
+        var $playerCompletionStatusTemplate = $("<div>", {
+            class: "playerinfo completionstatus"
+        })
+
+        game.playerList.map(function(playerInfo, index, array) {
+            var $playerDiv = $("<div>", {
+                class: "player",
+                id: "player"+String(index)
+            });
+
+            var $playerName = $("<div>", {
+                class: "playerinfo name"
+                }).append($("<div>", {
+                    class: "playername",
+                    text: playerInfo.name
+                })).append($("<div>", {
+                    class: "score",
+                    text: "Score: " + playerInfo.score
+                }))
+
+            var $playerCompletionStatus = $playerCompletionStatusTemplate.clone()
+
+            var $playerKick = $("<div>", {
+                class: "playerinfo kickcontainer"
+                }).append($("<input>", {
+                    type: "button",
+                    class: "playerinfo",
+                    hidden: "true",
+                    value: "KICK?"
+                }))
+
+            $playerDiv
+                .append($playerName)
+                .append($playerCompletionStatus)
+                .append($playerKick)
+
+            // this is defined as $("#playerList")
+            this.append($playerDiv)
+        }, $("#playerlist"));
+    },
 
     initializeAcronymWriter: function() {
         var $playerCompletionStatusTemplate = $("<div>", {

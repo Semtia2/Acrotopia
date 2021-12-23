@@ -33,18 +33,22 @@ wsServer.on('request',function(request){
     var connection = request.accept();
     var player = {
         connection:connection,
-        latencyTrips:[],
     }
     players.push(player);
-
-    // Measure latency for player
-    measureLatency(player);
 
     // On Message event handler for a connection
     connection.on('message', function(message) {
         if (message.type === 'utf8') {
             var clientMessage = JSON.parse(message.utf8Data);
             switch (clientMessage.type){
+                case "Initialize":
+                    console.log('Connection from ' + request.remoteAddress + ' accepted.');
+                    break;
+                case "name":
+                    player.name = clientMessage.name
+                    var playerList = players.filter(player=>player.hasOwnProperty('name')).map(player => player.name)
+                    sendEveryoneWebSocketMessage({type:"player_list", playerList: playerList})
+                    break;
             }
         }
     });
@@ -56,11 +60,21 @@ wsServer.on('request',function(request){
                 players.splice(i,1);
             }
         };
-
-        // If the player is in a room, remove them from room and notify everyone
-        if(player.room){
-            var status = player.room.status;
-            var roomId = player.room.roomId;
-        }
     });
 });
+
+function sendEveryoneWebSocketMessage(messageObject){
+    var messageString = JSON.stringify(messageObject);
+    for (var i = players.length - 1; i >= 0; i--){
+        players[i].connection.send(messageString);
+    };
+}
+
+function sendPlayerWebSocketMessage(player, messageObject){
+    var messageString = JSON.stringify(messageObject);
+    for (var i = players.length - 1; i >= 0; i--) {
+        if(players[i]==player){
+            players[i].connection.send(messageString)
+        }
+    };
+}
