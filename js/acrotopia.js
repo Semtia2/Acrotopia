@@ -3,9 +3,10 @@
 // Runs when the page loads
 $(window).ready(function() {
     game.init();
+    client.initializeWebSocket();
 });
 
-var client = {
+const client = {
     websocket_url:"ws://localhost:8080/",
     websocket:undefined,
 
@@ -18,8 +19,9 @@ var client = {
         this.websocket = new WebSocketObject(this.websocket_url);
         this.websocket.onmessage = client.handleWebSocketMessage;
         this.websocket.onopen = function(){
-            // Hide the starting menu layer
-            client.sendWebSocketMessage({type: 'Initialize', message:'A new player has joined'});
+            console.log("Connection opened.");
+            this.send(JSON.stringify({type: 'Initialize', message:'A new player has joined'}));
+            // client.sendWebSocketMessage({type: 'Initialize', message:'A new player has joined'});
         }
 
         // Log errors
@@ -27,9 +29,13 @@ var client = {
           console.log('WebSocket Error ' + error);
         };
 
-        // Log messages from the server
-        this.websocket.onmessage = function(e) {
-          console.log('Server: ' + e.data);
+        // // Log messages from the server
+        // this.websocket.onmessage = function(e) {
+        //   console.log('Server: ' + e.data);
+        // };
+
+        this.websocket.onclose = function() {
+            client.websocket = null;
         };
     },
 
@@ -40,6 +46,9 @@ var client = {
     handleWebSocketMessage: function(message){
         var messageObject = JSON.parse(message.data);
         switch(messageObject.type){
+            case "confirm connection":
+                console.log(messageObject.text);
+                break;
             case "player_list":
                 game.playerList = messageObject.playerList;
                 game.updateWaitingRoom();
@@ -48,7 +57,7 @@ var client = {
     },
 }
 
-var game = {
+const game = {
     name: undefined,
     playerCount: 7,
     roundCount: 8,
@@ -97,20 +106,19 @@ var game = {
     startGame: function() {
         game.name = $("#screenname input").val().trim()
 
-        client.initializeWebSocket();
         client.sendWebSocketMessage({type:"name", name:game.name})
 
-        game.initializeAcronymWriter();
-        game.initializeAcronymJudger();
+        // game.initializeAcronymWriter();
+        // game.initializeAcronymJudger();
         $('#welcomecontainer').hide();
         $('#gamecontainer').show();
     },
 
     // Modes: createLobby, waitingRoom, writeAcronyms, judgeAcromyms, results
-    mode: "writeAcronyms",
+    mode: "waitingRoom",
 
     updateWaitingRoom: function() {
-        if (mode != "waitingRoom")
+        if (game.mode != "waitingRoom")
             return;
 
         var $playerCompletionStatusTemplate = $("<div>", {
@@ -128,10 +136,11 @@ var game = {
                 }).append($("<div>", {
                     class: "playername",
                     text: playerInfo.name
-                })).append($("<div>", {
-                    class: "score",
-                    text: "Score: " + playerInfo.score
                 }))
+                // .append($("<div>", {
+                //     class: "score",
+                //     text: "Score: " + playerInfo.score
+                // }))
 
             var $playerCompletionStatus = $playerCompletionStatusTemplate.clone()
 
