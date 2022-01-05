@@ -18,11 +18,11 @@
 
             <div id="welcomecontainer" class="welcomeContainer">
                 <form id="createlobby" class="createLobby">
-                    <div id="screenname" class="createLobbyDiv">
+                    <div id="screenname" class="enterName createLobbyDiv">
                         <input type="text" placeholder="Enter name" maxlength="32">
                     </div>
-                    <div id="creategame" class="createLobbyDiv">
-                        <input type="button" onclick="game.startGame();" value="Join Game" disabled>
+                    <div id="creategame" class="createLobbyDiv progressButtonDiv">
+                        <input type="button" onclick="game.joinGame();" value="Join Game" disabled>
                     </div>
                     <input type="button" class="collapsible" value="Customize">
                     <div id="rules" class="createLobbyDiv">
@@ -97,8 +97,11 @@
                         <div id="timer">60</div>
                     </div>
                 </div>
-                <div id="gamebody">
-                    <div id="playerlist"></div>
+                <div id="gamebody" class="gamebody">
+                    <div id="playerlist" class="shadow"></div>
+                    <div id="gameStart" class="createLobbyDiv gameStartDiv progressButtonDiv"> <!-- style="display:none;"> -->
+                        <input type="button" onclick="client.startGame();" value="Start Game">
+                    </div>
                     <div id="acronymwriter" class="gamelayer">
                         <div id="letterdisplay">
                         </div>

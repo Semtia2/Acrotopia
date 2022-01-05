@@ -21,18 +21,12 @@ const client = {
         this.websocket.onopen = function(){
             console.log("Connection opened.");
             this.send(JSON.stringify({type: 'Initialize', message:'A new player has joined'}));
-            // client.sendWebSocketMessage({type: 'Initialize', message:'A new player has joined'});
         }
 
         // Log errors
         this.websocket.onerror = function(error) {
           console.log('WebSocket Error ' + error);
         };
-
-        // // Log messages from the server
-        // this.websocket.onmessage = function(e) {
-        //   console.log('Server: ' + e.data);
-        // };
 
         this.websocket.onclose = function() {
             client.websocket = null;
@@ -43,7 +37,7 @@ const client = {
         this.websocket.send(JSON.stringify(messageObject));
     },
 
-    handleWebSocketMessage: function(message){
+    handleWebSocketMessage: function(message) {
         var messageObject = JSON.parse(message.data);
         switch(messageObject.type){
             case "confirm connection":
@@ -53,37 +47,54 @@ const client = {
                 game.playerList = messageObject.playerList;
                 game.updateWaitingRoom();
                 break;
+            case "startGame":
+                game.playerCount = messageObject.playerCount
+                game.acronymLength = messageObject.acronymLength
+                game.startGame()
+                break;
+            case "nextRound":
+                game.currentRound = messageObject.roundNumber
+                game.mode = messageObject.mode
+                game.switchToWrite(messageObject.acronym)
+                break;
         }
     },
+
+    // Called when the host clicks the "Start Game" button
+    startGame: function() {
+        if(!game.isHost) {
+            return;
+        }
+        client.sendWebSocketMessage({type: "startGame"})
+    }
 }
 
 const game = {
     name: undefined,
-    playerCount: 7,
+    isHost: false,
+    playerCount: undefined,
     roundCount: 8,
+    currentRound: undefined,
     roundTimer: 600,
-    acronymLength: 4,
+    acronymLength: undefined,
     lenient: false,
     singleVote: false,
     kick: false,
     acronymLetters: [],
     playerList: [],
-    acronymResponses: [
-        {player: "", acronym: "My love for you is bulletproof but you're the one who shot me", score:4},
-        {player: "Balcony nut", acronym: "You must stick up for yourself son", score:2},
-        {player: "", acronym: "I wrote Jesus Walks, I'm never gonna hell", score:1},
-        {player: "", acronym: "I can't believe that it's always like this", score:0}
-    ],
+    acronymResponses: [],
 
     init: function() {
-        var validateName = function() {
-            $("#creategame input").prop('disabled', $(this).val().trim() === "");
-        }
-        $("#screenname input")
-        .on("change", validateName)
-        .on("keypress", validateName)
-        .on("keydown", validateName)
-        .on("keyup", validateName)
+        // var validateName = function() {
+        //     $("#creategame input").prop('disabled', $(this).val().trim() === "");
+        // }
+        // $("#screenname input")
+        // .on("change", validateName)
+        // .on("keypress", validateName)
+        // .on("keydown", validateName)
+        // .on("keyup", validateName)
+
+        $("#creategame input").prop('disabled', false)
 
         var coll = document.getElementsByClassName("collapsible");
         var i;
@@ -100,10 +111,12 @@ const game = {
             })
         })
 
-        // $("#creategame input").click();
+        $("#screenname input").val("Balcony nut")
+        // game.startGame()
     },
 
-    startGame: function() {
+    // Called when the "Join Game" button is clicked
+    joinGame: function() {
         game.name = $("#screenname input").val().trim()
 
         client.sendWebSocketMessage({type:"name", name:game.name})
@@ -114,53 +127,52 @@ const game = {
         $('#gamecontainer').show();
     },
 
+    startGame: function() {
+        game.initializeAcronymWriter();
+        game.initializeAcronymJudger();
+    },
+
     // Modes: createLobby, waitingRoom, writeAcronyms, judgeAcromyms, results
-    mode: "waitingRoom",
+    currentMode: "waitingRoom",
 
     updateWaitingRoom: function() {
-        if (game.mode != "waitingRoom")
+        if (game.currentMode != "waitingRoom")
             return;
 
-        var $playerCompletionStatusTemplate = $("<div>", {
-            class: "playerinfo completionstatus"
-        })
-
+        $("#playerlist").css("width", "100%").empty()
         game.playerList.map(function(playerInfo, index, array) {
             var $playerDiv = $("<div>", {
                 class: "player",
                 id: "player"+String(index)
             });
 
+            if(playerInfo.name == game.name)
+                $playerDiv.addClass("you")
+
             var $playerName = $("<div>", {
                 class: "playerinfo name"
                 }).append($("<div>", {
                     class: "playername",
                     text: playerInfo.name
-                }))
-                // .append($("<div>", {
-                //     class: "score",
-                //     text: "Score: " + playerInfo.score
-                // }))
-
-            var $playerCompletionStatus = $playerCompletionStatusTemplate.clone()
-
-            var $playerKick = $("<div>", {
-                class: "playerinfo kickcontainer"
-                }).append($("<input>", {
-                    type: "button",
-                    class: "playerinfo",
-                    hidden: "true",
-                    value: "KICK?"
-                }))
+                })).css("width", "100%")
 
             $playerDiv
                 .append($playerName)
-                .append($playerCompletionStatus)
-                .append($playerKick)
 
             // this is defined as $("#playerList")
             this.append($playerDiv)
         }, $("#playerlist"));
+
+        if(game.name == game.playerList[0].name) {
+            game.isHost = true
+            $("#gameStart").css("display", "block")
+        } else {
+            game.isHost = false
+            $("#gameStart").css("display", "none")
+        }
+
+        $('#acronymjudger').hide();
+        $('#acronymwriter').hide();
     },
 
     initializeAcronymWriter: function() {
@@ -203,27 +215,20 @@ const game = {
             // this is defined as $("#playerList")
             this.append($playerDiv)
         }, $("#playerlist"));
-
-        game.switchToWrite();
     },
 
     initializeAcronymJudger: function() {
-        game.switchToJudge();
+        // game.switchToJudge();
     },
 
-    switchToWrite: function() {
-        game.acronymLetters = [];
-        for (var _ = 0; _ < game.acronymLength; _++) {
-            game.acronymLetters.push(game.getRandomLetter())
-        }
-
+    switchToWrite: function(acronymLetters) {
         var $letterDisplayTemplate = $("<div>", {
             id: "letterdisplay"
         })
         var $playerCompletionStatusTemplate = $("<div>", {
             class: "playerinfo completionstatus"
         })
-        game.acronymLetters.map(function(letter) {
+        acronymLetters.map(function(letter) {
             // this is defined as $("#letterdisplay")
             $letterDisplayTemplate.append($("<div>", {
                 class: "initials uncompleted",
@@ -252,8 +257,6 @@ const game = {
                 animate: false,
                 extraSpace : extraLineSpace
             });
-
-        game.mode = "writeAcronyms";
     },
 
     switchToJudge: function() {
@@ -321,6 +324,7 @@ const game = {
         return String.fromCharCode(charCode)
     },
 
+    // Called when the player enters an acronym
     activateSubmit(response) {
         if (!response)
             return
@@ -335,9 +339,4 @@ const game = {
         else
             return false
     },
-
-    submit() {
-        var messageObject = {type:"acronym", acronym:$('#acronyminput textarea').value}
-        dummyServer.pushToServer(JSON.stringify(messageObject))
-    }
 }
