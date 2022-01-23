@@ -98,16 +98,17 @@
                     </div>
                 </div>
                 <div id="gamebody" class="gamebody">
-                    <div id="playerlist" class="shadow"></div>
+                    <div id="playerlist" class="shadow playerlist"></div>
+                    <div id="scoreboard" class="shadow scoreboard"></div>
                     <div id="gameStart" class="createLobbyDiv gameStartDiv progressButtonDiv"> <!-- style="display:none;"> -->
                         <input type="button" onclick="client.startGame();" value="Start Game">
                     </div>
                     <div id="acronymwriter" class="gamelayer">
                         <div id="letterdisplay">
                         </div>
-                        <div id="acronyminput">
+                        <div id="acronyminput" class="acronyminput">
                             <textarea spellcheck="false" oninput="game.activateSubmit(this.value);"></textarea>
-                            <input type="button" id="acronymsubmit" disabled value="Submit" onclick="submit();">
+                            <input type="button" id="acronymsubmit" disabled value="Submit" onclick="client.submitAcronym();">
                         </div>
                     </div>
                     <div id="acronymjudger" class="gamelayer">

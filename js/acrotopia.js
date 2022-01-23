@@ -54,18 +54,51 @@ const client = {
                 break;
             case "nextRound":
                 game.currentRound = messageObject.roundNumber
-                game.mode = messageObject.mode
+                game.currentMode = messageObject.mode
                 game.switchToWrite(messageObject.acronym)
+                break;
+            case "switchToJudge":
+                game.currentMode = messageObject.currentMode;
+                game.acronymResponses[game.currentRound-1] = messageObject.responses;
+                game.myResponseIndex = messageObject.playerIndex;
+                game.switchToJudge(messageObject.responses);
                 break;
         }
     },
 
     // Called when the host clicks the "Start Game" button
+    // Leads to the "startGame" case above
     startGame: function() {
         if(!game.isHost) {
             return;
         }
         client.sendWebSocketMessage({type: "startGame"})
+    },
+
+    submitAcronym: function() {
+        let entryBox = $("#acronyminput textarea");
+        let myAcronym = entryBox.val();
+        if (game.validAcronym(myAcronym)) {
+            client.sendWebSocketMessage({
+                type: "acronymResponses",
+                acronym: myAcronym
+            })
+            $("#acronymsubmit").prop('disabled', true);
+            entryBox.prop("disabled", true)
+            // $("#acronymsubmit").addClass("submitted");
+        }
+        else {
+            $("#acronymsubmit").prop('disabled', false);
+            return;
+        }
+    },
+
+    submitVotes: function() {
+        $(".acronymContainer .acronym").map((index, ele) => $(ele).hasClass("selected")).get()
+        $(".acronymContainer .acronym").map(function(index, ele) {
+            let acronymContainer = $(ele);
+            acronymContainer.hasClass("selected")
+        })
     }
 }
 
@@ -83,6 +116,7 @@ const game = {
     acronymLetters: [],
     playerList: [],
     acronymResponses: [],
+    myResponseIndex: undefined,
 
     init: function() {
         // var validateName = function() {
@@ -118,6 +152,7 @@ const game = {
     // Called when the "Join Game" button is clicked
     joinGame: function() {
         game.name = $("#screenname input").val().trim()
+        game.currentMode = "waitingRoom"
 
         client.sendWebSocketMessage({type:"name", name:game.name})
 
@@ -128,12 +163,15 @@ const game = {
     },
 
     startGame: function() {
+        $("#playerlist").css("display", "none");
+        $("#gameStart").css("display", "none");
+
         game.initializeAcronymWriter();
         game.initializeAcronymJudger();
     },
 
     // Modes: createLobby, waitingRoom, writeAcronyms, judgeAcromyms, results
-    currentMode: "waitingRoom",
+    currentMode: "createLobby",
 
     updateWaitingRoom: function() {
         if (game.currentMode != "waitingRoom")
@@ -214,7 +252,7 @@ const game = {
 
             // this is defined as $("#playerList")
             this.append($playerDiv)
-        }, $("#playerlist"));
+        }, $("#scoreboard"));
     },
 
     initializeAcronymJudger: function() {
@@ -259,19 +297,19 @@ const game = {
             });
     },
 
-    switchToJudge: function() {
+    switchToJudge: function(acronymResponses) {
         var $acronymDisplayTemplate = $("<div>", {
             id: "acronymdisplay"
         })
-        game.acronymResponses.map(function(response) {
+        acronymResponses.map(function(response, index) {
             // The tabs are meant to reflect the html structure.
-            if (response.player == game.name) {
+            if (game.myResponseIndex == index) {
                 $acronymDisplayTemplate.append($("<div>", {
                     class: "acronymContainer"
                 })
                     .append($("<div>", {
                         class: "acronym acronymContainerDiv",
-                        text: response.acronym
+                        text: response
                     }))
                     .append($("<div>", {
                         class: "result acronymContainerDiv"
@@ -284,9 +322,9 @@ const game = {
                 })
                     .append($("<div>", {
                         class: "acronym selectable acronymContainerDiv",
-                        text: response.acronym
+                        text: response
                     })
-                        .on("click", function(){
+                        .on("click", function() {
                             this.classList.toggle("selected")
                             $("#finalizevote").prop('disabled', $("#acronymdisplay .acronym.selected").length < 1);
                         })
@@ -298,11 +336,11 @@ const game = {
             }
         })
         $("#acronymdisplay").replaceWith($acronymDisplayTemplate)
-        $("#acronymdisplay .acronym")
+        // $("#acronymdisplay .acronym")
 
         $('#acronymwriter').hide();
         $('#acronymjudger').show();
-        game.mode = "judgeAcronyms";
+        game.currentMode = "judgeAcronyms";
     },
 
     switchToResults: function() {
@@ -317,18 +355,13 @@ const game = {
         })
     },
 
-    getRandomLetter() {
-        // CharCode(65)=>A, CharCode(90)=>Z
-        // Math.random() returns a float from the interval [0,1)
-        var charCode = Math.floor(Math.random() * 26) + 65
-        return String.fromCharCode(charCode)
-    },
-
     // Called when the player enters an acronym
     activateSubmit(response) {
-        if (!response)
-            return
         var submitButton = $("#acronymsubmit")
+        if (!response) {
+            submitButton.prop('disabled', true);
+            return
+        }
         submitButton.prop('disabled', !game.validAcronym(response));
     },
 

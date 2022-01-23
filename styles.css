@@ -245,7 +245,7 @@ input:checked + label {
     height: fit-content;
 }
 
-#playerlist {
+.playerlist {
     display: flex;
     flex-direction: column;
     /*margin-left: 2%;*/
@@ -255,6 +255,10 @@ input:checked + label {
     font-size: 75px;
     /*overflow-y: scroll;*/
     /*overflow-x: hidden;*/
+}
+
+.scoreboard {
+    width: 40%;
 }
 
 .player {
@@ -415,7 +419,7 @@ input:checked + label {
     background-color: rgb(255, 0, 0);
 }
 
-#acronyminput {
+.acronyminput {
     width: 100%;
     text-align: center;
     margin: 0;
@@ -423,7 +427,7 @@ input:checked + label {
     font-size: 160%;
 }
 
-#acronyminput textarea {
+.acronyminput textarea {
     width: 100%;
     height: 38px;
     box-sizing: border-box;
@@ -436,6 +440,10 @@ input:checked + label {
     resize: none;
     overflow: auto;
     border: 1px solid black;
+}
+
+.acronyminput textarea:disabled {
+    background-color: rgba(100, 100, 100, 1.0);
 }
 
 #acronymsubmit {

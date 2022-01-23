@@ -20,6 +20,7 @@ wsServer.on('connection', function(webSocket, req) {
     webSocket.send(message);
     var player = {
         connection:webSocket,
+        name: undefined,
     }
     connections.push(player);
 
@@ -40,6 +41,24 @@ wsServer.on('connection', function(webSocket, req) {
                 break;
             case "startGame":
                 game.initializeGame();
+                break;
+            case "acronymResponses":
+                let responsesObject = game.acronymResponses[game.currentRound-1]
+                responsesObject[player.name] = clientMessage.acronym
+
+                if (game.playerList.every(player => player.name in responsesObject)) {
+                    let responsesList = Object.values(responsesObject);
+                    game.currentMode = "judgeAcromyms"
+                    let messageObject = {
+                        type: "switchToJudge",
+                        currentMode: game.currentMode,
+                        responses: responsesList,
+                    }
+                    connections.forEach(function(player, index, array) {
+                        messageObject.playerIndex = responsesList.indexOf(responsesObject[player.name])
+                        player.connection.send(JSON.stringify(messageObject));
+                    })
+                }
                 break;
         }
     });
@@ -68,10 +87,10 @@ function sendEveryoneWebSocketMessage(messageObject) {
 }
 
 function sendPlayerWebSocketMessage(player, messageObject) {
-    var messageString = JSON.stringify(messageObject);
     for (var i = connections.length - 1; i >= 0; i--) {
         if(connections[i]==player){
-            connections[i].connection.send(messageString)
+            connections[i].connection.send(JSON.stringify(messageObject));
+            return;
         }
     };
 }
@@ -105,11 +124,13 @@ const game = {
     },
 
     startNextRound: function() {
-        game.currentRound++
-        game.acronymLetters.push(game.getRandomLetters(game.acronymLength))
+        game.currentRound++;
+        game.currentMode = "writeAcronyms";
+        game.acronymLetters.push(game.getRandomLetters(game.acronymLength));
+        game.acronymResponses.push([]);
         var messageObject = {
             type: "nextRound",
-            acronym: acronymLetters[game.currentRound],
+            acronym: game.acronymLetters[game.currentRound-1],
             roundNumber: game.currentRound,
             mode: game.currentMode
         }
