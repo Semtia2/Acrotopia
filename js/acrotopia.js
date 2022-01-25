@@ -43,6 +43,10 @@ const client = {
             case "confirm connection":
                 console.log(messageObject.text);
                 break;
+            case "showcase":
+                $("#screenname input").val(messageObject.name)
+                $("#acronyminput textarea").val(messageObject.showcaseAcronym)
+                break;
             case "player_list":
                 game.playerList = messageObject.playerList;
                 game.updateWaitingRoom();
@@ -62,6 +66,10 @@ const client = {
                 game.acronymResponses[game.currentRound-1] = messageObject.responses;
                 game.myResponseIndex = messageObject.playerIndex;
                 game.switchToJudge(messageObject.responses);
+                break;
+            case "switchToResults":
+                game.currentMode = messageObject.currentMode;
+                game.switchToResults(messageObject.votes);
                 break;
         }
     },
@@ -94,10 +102,15 @@ const client = {
     },
 
     submitVotes: function() {
-        $(".acronymContainer .acronym").map((index, ele) => $(ele).hasClass("selected")).get()
-        $(".acronymContainer .acronym").map(function(index, ele) {
-            let acronymContainer = $(ele);
-            acronymContainer.hasClass("selected")
+        let voteList = $(".acronymContainer .acronym").get()
+                            .map(function(ele, index) {
+                                let element = $(ele)
+                                return [element.text(), element.hasClass("selected")]
+                            })
+        $("finalizevote").addClass("selected");
+        client.sendWebSocketMessage({
+            type: "acronymVotes",
+            votes: voteList,
         })
     }
 }
@@ -145,7 +158,7 @@ const game = {
             })
         })
 
-        $("#screenname input").val("Balcony nut")
+        // $("#screenname input").val("Balcony nut")
         // game.startGame()
     },
 
@@ -326,7 +339,8 @@ const game = {
                     })
                         .on("click", function() {
                             this.classList.toggle("selected")
-                            $("#finalizevote").prop('disabled', $("#acronymdisplay .acronym.selected").length < 1);
+                            $("#finalizevote")
+                              .prop('disabled', $("#acronymdisplay .acronym.selected").length < 1);
                         })
                     )
                     .append($("<div>", {
@@ -343,16 +357,16 @@ const game = {
         game.currentMode = "judgeAcronyms";
     },
 
-    switchToResults: function() {
-        var sortedResponses = game.acronymResponses.slice(0).sort((first, second) => second.score - first.score)
-        var topScore = sortedResponses[0].score
+    switchToResults: function(acronymScores) {
+        var topScore = acronymScores[0].score
         var $scores = $(".result")
-        $scores.text(index => game.acronymResponses[index].score)
-        $(".acronym").removeClass("selectable").off("click")
-        // .addClass(index => (game.acronymResponses[index].score==topScore)?"winner":"")
-        .addClass(function(index) {
-            return (game.acronymResponses[index].score==topScore)?"winner":""
-        })
+        $scores.text(index => acronymScores[index].score)
+        $(".acronym")
+          .text(index => acronymScores[index.acronym])
+          .removeClass("selectable")
+          .off("click")
+          .addClass(index => (acronymScores[index].score==topScore)?"winner":"")
+        $("finalizevote").hide()
     },
 
     // Called when the player enters an acronym

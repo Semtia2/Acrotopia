@@ -17,7 +17,7 @@
 }
 
 *, *:before, *:after {
-  box-sizing: inherit;
+  box-sizing: border-box;
 }
 
 html {
@@ -207,6 +207,7 @@ input:checked + label {
     background-color: lightgrey;
     padding: 6px 0;
     box-shadow: 0 0 15px rgb(0 0 0 / 65%);
+    display: none;
 }
 
 #round {
@@ -303,9 +304,9 @@ input:checked + label {
 }
 
 .statusinitials {
-    width: 16px;
-    height: 16px;
-    line-height: 16px;
+    width: 22px;
+    height: 22px;
+    line-height: 18px;
     text-align: center;
     font-size: 16px;
     padding: 3px;
@@ -379,11 +380,11 @@ input:checked + label {
     font-size: 32px;
 }
 
-#acronymdisplay .selected {
+.selected {
     background-color: rgba(32, 227, 106, 1.0);
 }
 
-#acronymdisplay .selectable:hover {
+.selectable:hover {
     cursor: pointer;
     padding: 10px;
     border: 6px solid rgba(18, 91, 102, 0.45);
@@ -466,7 +467,7 @@ input:checked + label {
 
 #finalizevote {
     width: 100%;
-    height: 47px;
+    height: 63px;
     display: block;
     text-align: center;
     margin: 0;

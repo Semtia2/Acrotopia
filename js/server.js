@@ -16,7 +16,19 @@ server.listen(port, function(){
 var connections = [];
 wsServer.on('connection', function(webSocket, req) {
     console.log('Connection from ' + req.socket.remoteAddress + ' accepted.');
-    message = JSON.stringify({type: 'confirm connection', text: 'Hi there. You are now connected to the WebSocket Server'})
+    if (game.showcase) {
+        // var showcaseAcronym = game.showcaseAcronym[connections.length]
+        message = JSON.stringify({
+            type: 'showcase',
+            name: game.showcasePlayers[connections.length],
+            showcaseAcronym: game.showcaseAcronym[connections.length],
+        })
+    } else {
+        message = JSON.stringify({
+            type: 'confirm connection',
+            text: 'Hi there. You are now connected to the WebSocket Server'
+        })
+    }
     webSocket.send(message);
     var player = {
         connection:webSocket,
@@ -41,23 +53,53 @@ wsServer.on('connection', function(webSocket, req) {
                 break;
             case "startGame":
                 game.initializeGame();
+                // if (game.showcase) {
+                //     webSocket.send(JSON.stringify({
+                //         type: ""
+                //     }))
+                // }
                 break;
             case "acronymResponses":
                 let responsesObject = game.acronymResponses[game.currentRound-1]
                 responsesObject[player.name] = clientMessage.acronym
 
                 if (game.playerList.every(player => player.name in responsesObject)) {
-                    let responsesList = Object.values(responsesObject);
+                    responsesObject["shuffledList"] = Object.values(responsesObject)
+                      .map((value) => ({value, sort: Math.random()}))
+                      .sort((a, b) => a.sort - b.sort)
+                      .map(({ value }) => value)
                     game.currentMode = "judgeAcromyms"
                     let messageObject = {
                         type: "switchToJudge",
                         currentMode: game.currentMode,
-                        responses: responsesList,
+                        responses: responsesObject["shuffledList"],
                     }
-                    connections.forEach(function(player, index, array) {
-                        messageObject.playerIndex = responsesList.indexOf(responsesObject[player.name])
+                    connections.forEach(function(player, index) {
+                        messageObject.playerIndex = responsesObject["shuffledList"].indexOf(responsesObject[player.name])
                         player.connection.send(JSON.stringify(messageObject));
                     })
+                }
+                break;
+            case "acronymVotes":
+                let votesObject = game.acronymVotes[game.currentRound-1];
+                votesObject[player.name] = clientMessage.votes;
+
+                if (game.playerList.every(player => player.name in votesObject)) {
+                    let voteCounts = {};
+                    let voteList = Object.values(votesObject).flat(1);
+                    voteList.forEach(function(vote) {
+                        voteCounts[vote[0]] = (voteCounts[vote[0]] ?? 0) + vote[1]
+                    })
+                    let sortedScores = Object.entries(voteCounts)
+                      .map((voteCount) => ({acronym: voteCount[0], score:voteCount[1]}))
+                      .sort((first, second) => second.score - first.score)
+                    game.currentMode = "results"
+                    let messageObject = {
+                        type: "switchToResults",
+                        currentMode: game.currentMode,
+                        votes: sortedScores,
+                    }
+                    sendEveryoneWebSocketMessage(messageObject);
                 }
                 break;
         }
@@ -111,6 +153,22 @@ const game = {
     kick: false,
     acronymLetters: [],
     acronymResponses: [],
+    acronymVotes: [],
+    showcase: true,
+    showcasePlayers: [
+        "DickTony",
+        "mudomo",
+        "WesMan",
+        "dante6868",
+        "Sulfurus",
+    ],
+    showcaseAcronym: [
+        "GrandmaGreasing Lesley's Tired FatiguedFeetToWalkUpPeter'sHill",
+        "Granny Licking Titty Fucker",
+        "Good Luck? The FukIsYouOn",
+        "GhoulsWith Leprosy TakingRefugeInThe Foyer",
+        // "GrammaI'd Like To FerociouslyFuckTilSheCroaks",
+    ],
 
     initializeGame: function() {
         game.playerCount = game.playerList.length
@@ -127,12 +185,18 @@ const game = {
         game.currentRound++;
         game.currentMode = "writeAcronyms";
         game.acronymLetters.push(game.getRandomLetters(game.acronymLength));
+
         game.acronymResponses.push([]);
+        game.acronymVotes.push([]);
         var messageObject = {
             type: "nextRound",
             acronym: game.acronymLetters[game.currentRound-1],
             roundNumber: game.currentRound,
             mode: game.currentMode
+        }
+
+        if (game.showcase) {
+            messageObject.acronym = ['G','L','T','F'];
         }
 
         sendEveryoneWebSocketMessage(messageObject)
