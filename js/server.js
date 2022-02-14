@@ -102,6 +102,9 @@ wsServer.on('connection', function(webSocket, req) {
                     sendEveryoneWebSocketMessage(messageObject);
                 }
                 break;
+            case "nextRound":
+                game.startNextRound();
+                break;
         }
     });
 

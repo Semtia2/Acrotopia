@@ -107,11 +107,18 @@ const client = {
                                 let element = $(ele)
                                 return [element.text(), element.hasClass("selected")]
                             })
-        $("finalizevote").addClass("selected");
+        $("#finalizevote").addClass("selected");
         client.sendWebSocketMessage({
             type: "acronymVotes",
             votes: voteList,
         })
+    },
+
+    nextRound: function() {
+        if (!game.isHost)
+            return;
+
+        client.sendWebSocketMessage({type: "nextRound"})
     }
 }
 
@@ -231,6 +238,9 @@ const game = {
             class: "playerinfo completionstatus"
         })
 
+        let entryBox = $("#acronyminput textarea");
+        entryBox.prop("disabled", false);
+
         game.playerList.map(function(playerInfo, index, array) {
             var $playerDiv = $("<div>", {
                 class: "player",
@@ -273,6 +283,9 @@ const game = {
     },
 
     switchToWrite: function(acronymLetters) {
+        let entryBox = $("#acronyminput textarea");
+        entryBox.prop("disabled", false);
+
         var $letterDisplayTemplate = $("<div>", {
             id: "letterdisplay"
         })
@@ -366,7 +379,11 @@ const game = {
           .removeClass("selectable")
           .off("click")
           .addClass(index => (acronymScores[index].score==topScore)?"winner":"")
-        $("finalizevote").hide()
+        $("#finalizevote").hide()
+
+        if(game.isHost) {
+            $("#nextroundbutton").show()
+        }
     },
 
     // Called when the player enters an acronym
