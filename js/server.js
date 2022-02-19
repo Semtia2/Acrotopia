@@ -97,7 +97,8 @@ wsServer.on('connection', function(webSocket, req) {
                     let messageObject = {
                         type: "switchToResults",
                         currentMode: game.currentMode,
-                        votes: sortedScores,
+                        unsortedVotes: voteCounts,
+                        sortedVotes: sortedScores,
                     }
                     sendEveryoneWebSocketMessage(messageObject);
                 }
@@ -114,6 +115,7 @@ wsServer.on('connection', function(webSocket, req) {
             if(connections[i]==player){
                 connections.splice(i,1);
             }
+            // game.showcase = true;
         };
         for (var j = game.playerList.length - 1; j >= 0; j--) {
             if(game.playerList[j].name==player.name){
@@ -157,7 +159,7 @@ const game = {
     acronymLetters: [],
     acronymResponses: [],
     acronymVotes: [],
-    showcase: true,
+    showcase: false,
     showcasePlayers: [
         "DickTony",
         "mudomo",
@@ -200,6 +202,7 @@ const game = {
 
         if (game.showcase) {
             messageObject.acronym = ['G','L','T','F'];
+            game.showcase = false;
         }
 
         sendEveryoneWebSocketMessage(messageObject)

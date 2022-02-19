@@ -106,19 +106,19 @@
                     <div id="acronymwriter" class="gamelayer">
                         <div id="letterdisplay">
                         </div>
-                        <div id="acronyminput" class="acronyminput">
+                        <div id="acronyminput" class="acronyminput submitbutton">
                             <textarea spellcheck="false" oninput="game.activateSubmit(this.value);"></textarea>
-                            <input type="button" id="acronymsubmit" disabled value="Submit" onclick="client.submitAcronym();">
+                            <input type="button" id="acronymsubmit" class="submitbutton" disabled value="Submit" onclick="client.submitAcronym();">
                         </div>
                     </div>
                     <div id="acronymjudger" class="gamelayer">
                         <div id="acronymdisplay">
                         </div>
                         <div id="acronymvote">
-                            <input type="button" id="finalizevote" class="selectable submitButton" disabled value="Submit" onclick="client.submitVotes()">
+                            <input type="button" id="finalizevote" class="selectable submitButton submitbutton" disabled value="Submit" onclick="client.submitVotes()">
                         </div>
                         <div id="nextround">
-                            <input type="button" id="nextroundbutton" class="selectable submitButton hostonly" value="Start Next Round" onclick="client.nextRound()">
+                            <input type="button" id="nextroundbutton" class="selectable submitButton hostonly submitbutton" value="Start Next Round" onclick="client.nextRound()">
                         </div>
                     </div>
                 </div>

@@ -59,6 +59,7 @@ const client = {
             case "nextRound":
                 game.currentRound = messageObject.roundNumber
                 game.currentMode = messageObject.mode
+                game.acronymLetters = messageObject.acronym
                 game.switchToWrite(messageObject.acronym)
                 break;
             case "switchToJudge":
@@ -69,7 +70,7 @@ const client = {
                 break;
             case "switchToResults":
                 game.currentMode = messageObject.currentMode;
-                game.switchToResults(messageObject.votes);
+                game.switchToResults(messageObject.unsortedVotes, messageObject.sortedVotes,);
                 break;
         }
     },
@@ -283,8 +284,9 @@ const game = {
     },
 
     switchToWrite: function(acronymLetters) {
-        let entryBox = $("#acronyminput textarea");
-        entryBox.prop("disabled", false);
+        // let entryBox = $("#acronyminput textarea");
+        // entryBox.prop("disabled", false);
+        // entryBox.val("");
 
         var $letterDisplayTemplate = $("<div>", {
             id: "letterdisplay"
@@ -324,6 +326,10 @@ const game = {
     },
 
     switchToJudge: function(acronymResponses) {
+        let entryBox = $("#acronyminput textarea");
+        entryBox.prop("disabled", false);
+        entryBox.val("");
+
         var $acronymDisplayTemplate = $("<div>", {
             id: "acronymdisplay"
         })
@@ -370,15 +376,16 @@ const game = {
         game.currentMode = "judgeAcronyms";
     },
 
-    switchToResults: function(acronymScores) {
-        var topScore = acronymScores[0].score
+    switchToResults: function(unsortedVotes, sortedVotes) {
+        var topScore = sortedVotes[0].score
         var $scores = $(".result")
-        $scores.text(index => acronymScores[index].score)
-        $(".acronym")
-          .text(index => acronymScores[index.acronym])
+        let $acronyms = $(".acronym");
+        $scores.text(index => unsortedVotes[$acronyms[index].textContent])
+        $acronyms
+          // .text(index => acronymScores[index.acronym])
           .removeClass("selectable")
           .off("click")
-          .addClass(index => (acronymScores[index].score==topScore)?"winner":"")
+          .addClass(index => (unsortedVotes[$acronyms[index].textContent]==topScore)?"winner":"")
         $("#finalizevote").hide()
 
         if(game.isHost) {

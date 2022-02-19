@@ -447,25 +447,7 @@ input:checked + label {
     background-color: rgba(100, 100, 100, 1.0);
 }
 
-#acronymsubmit {
-    width: 100%;
-    height: 47px;
-    display: block;
-    text-align: center;
-    margin: 0;
-    letter-spacing: 2px;
-    font-size: 41px;
-    border: 0;
-    background: rgb(0, 255, 0);
-    padding: 0;
-    border: 1px solid black;
-}
-
-#acronymsubmit:active, #acronymsubmit:disabled {
-    background: rgb(200, 200, 200);
-}
-
-.submitButton {
+.submitbutton {
     width: 100%;
     height: 68px;
     display: block;
@@ -477,6 +459,10 @@ input:checked + label {
     background: rgb(0, 255, 0);
     padding: 0;
     border: 1px solid black;
+}
+
+.submitbutton:active, .submitbutton:disabled {
+    background: rgb(200, 200, 200);
 }
 
 .hostonly {
