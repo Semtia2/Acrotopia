@@ -455,14 +455,19 @@ input:checked + label {
     margin: 0;
     letter-spacing: 2px;
     font-size: 41px;
-    border: 0;
     background: rgb(0, 255, 0);
-    padding: 0;
+    padding: 5px;
     border: 1px solid black;
 }
 
 .submitbutton:active, .submitbutton:disabled {
     background: rgb(200, 200, 200);
+}
+
+.submitbutton:hover {
+    cursor: pointer;
+    padding: 0px;
+    border: 6px solid rgba(18, 91, 102, 0.45);
 }
 
 .hostonly {

@@ -94,7 +94,8 @@ const client = {
             })
             $("#acronymsubmit").prop('disabled', true);
             entryBox.prop("disabled", true)
-            // $("#acronymsubmit").addClass("submitted");
+            $("#acronymsubmit").addClass("submitted");
+            $("#acronymsubmit").prop('disabled', true);
         }
         else {
             $("#acronymsubmit").prop('disabled', false);
@@ -109,6 +110,7 @@ const client = {
                                 return [element.text(), element.hasClass("selected")]
                             })
         $("#finalizevote").addClass("selected");
+        $("#finalizevote").prop("disabled", true);
         client.sendWebSocketMessage({
             type: "acronymVotes",
             votes: voteList,
