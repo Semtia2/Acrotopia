@@ -54,6 +54,7 @@ const client = {
             case "startGame":
                 game.playerCount = messageObject.playerCount
                 game.acronymLength = messageObject.acronymLength
+                game.currentRound = 1
                 game.startGame()
                 break;
             case "nextRound":
@@ -189,6 +190,9 @@ const game = {
         $("#playerlist").css("display", "none");
         $("#gameStart").css("display", "none");
 
+        $("#gameheader #round").text("Round " + game.currentRound + " of " + game.roundCount);
+        $("#gameheader").css("display", "flex");
+
         game.initializeAcronymWriter();
         game.initializeAcronymJudger();
     },
@@ -286,6 +290,7 @@ const game = {
     },
 
     switchToWrite: function(acronymLetters) {
+        $("#gameheader #round").text("Round " + game.currentRound + " of " + game.roundCount);
         // let entryBox = $("#acronyminput textarea");
         // entryBox.prop("disabled", false);
         // entryBox.val("");

@@ -143,6 +143,7 @@ function sendPlayerWebSocketMessage(player, messageObject) {
 }
 
 const game = {
+    isActive = false,
     // the order of this list is based on when the player enters a name
     playerList: [],
     hostName: undefined,
@@ -176,6 +177,7 @@ const game = {
     ],
 
     initializeGame: function() {
+        game.isActive = true;
         game.playerCount = game.playerList.length
 
         sendEveryoneWebSocketMessage({

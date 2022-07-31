@@ -201,13 +201,12 @@ input:checked + label {
     display: none;
 }
 
-#gameheader {
-    display: flex;
+.gameheader {
+    display: none;
     margin: 0px 10px 24px;
     background-color: lightgrey;
     padding: 6px 0;
     box-shadow: 0 0 15px rgb(0 0 0 / 65%);
-    display: none;
 }
 
 #round {
